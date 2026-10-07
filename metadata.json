@@ -1,0 +1,8 @@
+{
+  "name": "Nayanthara & Vishnu Vijay — Wedding Invitation",
+  "description": "An heirloom Kerala Hindu wedding invitation digital experience celebrating Nayanthara & Vishnu Vijay.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
