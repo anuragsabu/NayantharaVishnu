@@ -140,13 +140,6 @@ export const OpeningGate: React.FC<OpeningGateProps> = ({ onOpen }) => {
             →
           </span>
         </button>
-
-        <p
-          className="mt-4 text-[10px] tracking-[0.2em] uppercase font-sans-ui transition-colors duration-700"
-          style={{ color: isNight ? 'rgba(223, 199, 148, 0.5)' : 'rgba(125, 117, 108, 0.65)' }}
-        >
-          An heirloom Kerala wedding
-        </p>
       </div>
     </div>
   );

@@ -7,18 +7,50 @@
  * Bride's lineage first, divided by a subtle antique brass ornamental motif.
  */
 
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { WEDDING_DETAILS } from '../config';
 
 export const Families: React.FC = () => {
-  const { isNight } = useTheme();
+  const { isNight, isReducedMotion } = useTheme();
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (isReducedMotion) {
+      setIsVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [isReducedMotion]);
 
   return (
-    <section className="relative w-full py-16 md:py-24 px-6 flex flex-col items-center text-center">
+    <section
+      ref={sectionRef}
+      className="relative w-full py-16 md:py-24 px-6 flex flex-col items-center text-center"
+    >
       <div className="max-w-2xl mx-auto w-full flex flex-col items-center">
-        {/* BRIDE'S FAMILY */}
-        <div className="flex flex-col items-center w-full">
+        {/* BRIDE'S FAMILY - Appears first */}
+        <div
+          className={`flex flex-col items-center w-full transition-all duration-1000 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
+          }`}
+        >
           <h3
             className="font-cormorant text-2xl sm:text-3xl md:text-4xl font-normal tracking-[0.16em] uppercase transition-colors duration-700"
             style={{ color: isNight ? '#F7F3EE' : '#1E1B18' }}
@@ -48,9 +80,18 @@ export const Families: React.FC = () => {
           </p>
         </div>
 
-        {/* SUBTLE BRASS ORNAMENTAL DIVIDER */}
-        <div className="flex items-center justify-center gap-3 my-12 md:my-16 w-full" aria-hidden="true">
-          <div className="w-16 md:w-28 h-[1px] kasavu-line" />
+        {/* SUBTLE BRASS ORNAMENTAL DIVIDER - Draws itself */}
+        <div
+          className={`flex items-center justify-center gap-3 my-12 md:my-16 w-full transition-opacity duration-1000 delay-500 ${
+            isVisible ? 'opacity-100' : 'opacity-0'
+          }`}
+          aria-hidden="true"
+        >
+          <div
+            className={`w-16 md:w-28 h-[1px] kasavu-line ${
+              isVisible ? 'animate-line-draw' : 'scale-x-0'
+            }`}
+          />
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="shrink-0 opacity-70">
             {/* Traditional Kasavu Floral / Padmam Motif */}
             <path
@@ -59,11 +100,19 @@ export const Families: React.FC = () => {
             />
             <circle cx="12" cy="12" r="1.5" fill={isNight ? '#121110' : '#FDFBF7'} />
           </svg>
-          <div className="w-16 md:w-28 h-[1px] kasavu-line" />
+          <div
+            className={`w-16 md:w-28 h-[1px] kasavu-line ${
+              isVisible ? 'animate-line-draw' : 'scale-x-0'
+            }`}
+          />
         </div>
 
-        {/* GROOM'S FAMILY */}
-        <div className="flex flex-col items-center w-full">
+        {/* GROOM'S FAMILY - Appears second */}
+        <div
+          className={`flex flex-col items-center w-full transition-all duration-1000 delay-700 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
+          }`}
+        >
           <h3
             className="font-cormorant text-2xl sm:text-3xl md:text-4xl font-normal tracking-[0.16em] uppercase transition-colors duration-700"
             style={{ color: isNight ? '#F7F3EE' : '#1E1B18' }}

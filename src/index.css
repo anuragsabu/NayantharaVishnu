@@ -143,6 +143,95 @@
   );
 }
 
+/* Editorial Line Drawing Animation */
+@keyframes lineDrawIn {
+  from {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  to {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+.animate-line-draw {
+  animation: lineDrawIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: center;
+}
+
+/* Hero Bride Name Reveal */
+@keyframes heroBrideReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+    letter-spacing: 0.22em;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    letter-spacing: 0.12em;
+  }
+}
+
+.animate-hero-bride {
+  animation: heroBrideReveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Hero WEDS Bridge Reveal */
+@keyframes heroWedsReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 0.9;
+    transform: translateY(0);
+  }
+}
+
+.animate-hero-weds {
+  opacity: 0;
+  animation: heroWedsReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
+}
+
+/* Soft Vertical Paper Mask Reveal for Groom */
+@keyframes heroGroomReveal {
+  0% {
+    opacity: 0;
+    clip-path: inset(100% 0 0 0);
+    transform: translateY(10px);
+    letter-spacing: 0.2em;
+  }
+  100% {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+    transform: translateY(0);
+    letter-spacing: 0.12em;
+  }
+}
+
+.animate-hero-groom {
+  opacity: 0;
+  animation: heroGroomReveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) 1.3s forwards;
+}
+
+/* Subtle Countdown Digit Fade */
+@keyframes digitFade {
+  0% {
+    opacity: 0.4;
+    transform: translateY(-3px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-digit {
+  animation: digitFade 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 /* Respect prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {

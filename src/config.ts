@@ -59,12 +59,3 @@ export const WEDDING_DETAILS = {
     artist: 'Agam',
   },
 } as const;
-
-/**
- * GOOGLE APPS SCRIPT WEB APP INTEGRATION ENDPOINTS
- * Configure your published Google Apps Script Web App URLs here.
- * If empty, the app stores submissions gracefully in client storage
- * and logs to console without throwing technical errors to the guests.
- */
-export const WISHES_API_URL: string = '';
-export const RSVP_API_URL: string = '';

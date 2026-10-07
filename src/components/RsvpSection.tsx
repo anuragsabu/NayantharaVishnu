@@ -2,198 +2,202 @@
  * @license
  * SPDX-License-Identifier: Apache-2.0
  * 
- * RSVP SECTION
- * Private backend persistence via Google Apps Script Web App.
- * Clear feedback with optional WhatsApp follow-up confirmation.
+ * RSVP SECTION (WHATSAPP RSVP)
+ * Direct, elegant WhatsApp confirmation without any external database or storage.
+ * Dynamic message composition with manual send via WhatsApp (+91 6238594886).
  */
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
-import { RSVP_API_URL, WEDDING_DETAILS } from '../config';
-import { getAccessToken } from '../services/auth';
-import { appendRsvpToSheet } from '../services/googleSheets';
-import { ConfirmModal } from './ConfirmModal';
+import { WEDDING_DETAILS } from '../config';
 
 type AttendanceOption = 'Joyfully Accept' | 'Regretfully Decline';
 type GuestCount = '1' | '2' | '3' | '4+';
 
 export const RsvpSection: React.FC = () => {
-  const { isNight } = useTheme();
+  const { isNight, isReducedMotion } = useTheme();
 
   const [guestName, setGuestName] = useState('');
   const [attendance, setAttendance] = useState<AttendanceOption>('Joyfully Accept');
   const [numberOfGuests, setNumberOfGuests] = useState<GuestCount>('2');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [pendingPayload, setPendingPayload] = useState<any | null>(null);
+  const [whatsappOpened, setWhatsappOpened] = useState(false);
+  const [openError, setOpenError] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!guestName.trim()) return;
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
-    const payload = {
-      guestName: guestName.trim(),
-      attendance,
-      numberOfGuests: attendance === 'Regretfully Decline' ? '0' : numberOfGuests,
-      submittedAt: new Date().toISOString(),
-    };
-
-    const token = await getAccessToken();
-    if (token) {
-      // User is authenticated with Google Workspace - present mandatory confirmation dialog before mutating Google Sheet
-      setPendingPayload(payload);
-      setShowConfirmModal(true);
+  useEffect(() => {
+    if (isReducedMotion) {
+      setIsVisible(true);
       return;
     }
 
-    await processRsvp(payload, null);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [isReducedMotion]);
+
+  const generateWhatsAppUrl = (name: string, attend: AttendanceOption, count: GuestCount) => {
+    let messageText = '';
+    if (attend === 'Joyfully Accept') {
+      messageText = `Hello, I’m ${name.trim()}.\nI’d like to confirm my RSVP for Nayanthara & Vishnu Vijay’s wedding.\n\nAttendance: Joyfully Accept\nNumber of Guests: ${count}`;
+    } else {
+      messageText = `Hello, I’m ${name.trim()}.\nI’m sorry, but I won’t be able to attend Nayanthara & Vishnu Vijay’s wedding.\n\nAttendance: Regretfully Decline`;
+    }
+
+    return `https://wa.me/${WEDDING_DETAILS.contact.whatsappRaw}?text=${encodeURIComponent(messageText)}`;
   };
 
-  const processRsvp = async (payload: any, token: string | null) => {
-    setIsSubmitting(true);
-    setSubmitError(null);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!guestName.trim()) return;
+
+    setOpenError(false);
+    const waUrl = generateWhatsAppUrl(guestName, attendance, numberOfGuests);
 
     try {
-      // If Google token is active, save directly to Google Sheet
-      if (token) {
-        await appendRsvpToSheet(token, payload.guestName, payload.attendance, payload.numberOfGuests);
+      const opened = window.open(waUrl, '_blank', 'noopener,noreferrer');
+      setWhatsappOpened(true);
+      if (!opened) {
+        // Pop-up blocker triggered
+        setOpenError(true);
       }
-
-      // If backend Webhook/Apps Script URL is configured
-      if (RSVP_API_URL && RSVP_API_URL.trim() !== '') {
-        await fetch(RSVP_API_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
-        });
-      }
-
-      // Record in local cache to retain state
-      try {
-        localStorage.setItem('guest_rsvp_nv', JSON.stringify(payload));
-      } catch {
-        // Handled gracefully
-      }
-
-      setSubmitted(true);
     } catch {
-      setSubmitError("We couldn't save your RSVP just now. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-      setShowConfirmModal(false);
-      setPendingPayload(null);
+      setOpenError(true);
     }
   };
 
-  const handleConfirmSheetSave = async () => {
-    const token = await getAccessToken();
-    if (pendingPayload) {
-      await processRsvp(pendingPayload, token);
-    }
-  };
-
-  const handleWhatsAppFollowUp = () => {
-    const textMessage = encodeURIComponent(
-      `Namaskaram Vishnu & Nayanthara, this is ${guestName.trim()}.\nI have submitted my RSVP (${attendance}${
-        attendance === 'Joyfully Accept' ? ` for ${numberOfGuests} guests` : ''
-      }) for your wedding celebrations.`
-    );
-    const waUrl = `https://wa.me/${WEDDING_DETAILS.contact.whatsappRaw}?text=${textMessage}`;
-    window.open(waUrl, '_blank', 'noopener,noreferrer');
+  const handleManualOpen = () => {
+    const waUrl = generateWhatsAppUrl(guestName, attendance, numberOfGuests);
+    window.location.href = waUrl;
   };
 
   return (
-    <section className="relative w-full py-16 md:py-28 px-6 flex flex-col items-center text-center">
+    <section
+      ref={sectionRef}
+      className="relative w-full py-16 md:py-28 px-6 flex flex-col items-center text-center"
+    >
       <div className="max-w-xl mx-auto w-full flex flex-col items-center">
-        {/* Section Heading */}
-        <p
-          className="font-sans-ui text-xs tracking-[0.28em] uppercase transition-colors duration-700 mb-2"
-          style={{ color: isNight ? '#C7AA71' : '#681A24' }}
-        >
-          RSVP
-        </p>
+        {/* Antique Brass Line Draws First */}
+        <div
+          className={`w-16 md:w-24 h-[1px] kasavu-line mb-4 transition-transform duration-1000 ${
+            isVisible ? 'animate-line-draw' : 'scale-x-0'
+          }`}
+        />
 
-        {/* Supporting Line */}
-        <h3
-          className="font-cormorant italic text-2xl sm:text-3xl md:text-4xl font-light tracking-[0.05em] transition-colors duration-700 mb-10"
+        {/* Section Heading */}
+        <h2
+          className={`font-cormorant text-3xl sm:text-5xl md:text-6xl font-normal tracking-[0.18em] uppercase transition-all duration-700 delay-200 mb-2 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+          }`}
           style={{ color: isNight ? '#F7F3EE' : '#1E1B18' }}
         >
-          We would be delighted to have you with us.
-        </h3>
+          RSVP
+        </h2>
 
-        {submitted ? (
-          /* Success State with Optional WhatsApp Follow-up */
+        {/* Supporting Line */}
+        <p
+          className={`font-cormorant italic text-lg sm:text-xl md:text-2xl font-light tracking-[0.05em] transition-all duration-700 delay-300 mb-8 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+          }`}
+          style={{ color: isNight ? '#DFC794' : '#681A24' }}
+        >
+          We would be delighted to have you with us.
+        </p>
+
+        {/* Clear Communication Notice */}
+        <p
+          className="font-sans-ui text-[11px] tracking-[0.2em] uppercase opacity-70 mb-8"
+          style={{ color: isNight ? '#A8A096' : '#7D756C' }}
+        >
+          Your RSVP will be confirmed via WhatsApp.
+        </p>
+
+        {whatsappOpened ? (
+          /* WhatsApp Action Notice */
           <div
-            className="w-full p-8 sm:p-10 border rounded-sm transition-all duration-500 text-center flex flex-col items-center"
+            className="w-full p-8 sm:p-10 border rounded-sm transition-all duration-500 text-center flex flex-col items-center animate-fadeInSlow"
             style={{
               borderColor: isNight ? 'rgba(199, 170, 113, 0.4)' : 'rgba(155, 126, 70, 0.4)',
               backgroundColor: isNight ? 'rgba(28, 25, 23, 0.5)' : 'rgba(244, 239, 234, 0.5)',
             }}
           >
             <p
-              className="font-cormorant text-3xl font-light tracking-wide mb-2"
+              className="font-cormorant text-2xl sm:text-3xl font-light tracking-wide mb-3"
               style={{ color: isNight ? '#DFC794' : '#681A24' }}
             >
-              Thank you.
+              Opening WhatsApp...
             </p>
             <p
-              className="font-cormorant text-xl font-light tracking-wide mb-8"
-              style={{ color: isNight ? '#F7F3EE' : '#1E1B18' }}
+              className="font-sans-ui text-xs leading-relaxed max-w-sm opacity-80 mb-6"
+              style={{ color: isNight ? '#EAE3DA' : '#4A443E' }}
             >
-              Your RSVP has been received.
+              Please press <strong>Send</strong> in WhatsApp to complete your RSVP message to Vishnu &amp; Nayanthara.
             </p>
 
-            {/* Optional WhatsApp confirmation follow-up */}
-            <div className="flex flex-col items-center gap-3 pt-4 border-t w-full"
-              style={{
-                borderColor: isNight ? 'rgba(199, 170, 113, 0.2)' : 'rgba(155, 126, 70, 0.2)',
-              }}
-            >
-              <p
-                className="font-sans-ui text-[11px] tracking-wider uppercase opacity-75 max-w-sm"
-                style={{ color: isNight ? '#A8A096' : '#7D756C' }}
-              >
-                Optional: Share a note directly on WhatsApp
-              </p>
-
+            <div className="flex flex-col sm:flex-row items-center gap-3">
               <button
                 type="button"
-                onClick={handleWhatsAppFollowUp}
-                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 text-xs tracking-[0.2em] uppercase font-sans-ui border rounded-sm transition-colors duration-300 hover:opacity-90"
+                onClick={handleManualOpen}
+                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 text-xs tracking-[0.2em] uppercase font-sans-ui border rounded-sm transition-colors duration-300 hover:opacity-90 cursor-pointer"
                 style={{
                   borderColor: isNight ? 'rgba(199, 170, 113, 0.4)' : 'rgba(155, 126, 70, 0.4)',
                   color: isNight ? '#DFC794' : '#681A24',
                 }}
               >
-                CONNECT VIA WHATSAPP →
+                OPEN WHATSAPP AGAIN →
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setWhatsappOpened(false)}
+                className="text-[11px] tracking-wider uppercase font-sans-ui opacity-60 hover:opacity-100 transition-opacity"
+                style={{ color: isNight ? '#A8A096' : '#7D756C' }}
+              >
+                Edit Details
               </button>
             </div>
+
+            {openError && (
+              <p className="mt-4 text-xs font-sans-ui text-amber-600 tracking-wider">
+                WhatsApp couldn’t be opened. Please contact us directly at {WEDDING_DETAILS.contact.whatsapp}.
+              </p>
+            )}
           </div>
         ) : (
           /* RSVP Form */
           <form
             onSubmit={handleSubmit}
-            className="w-full flex flex-col gap-8 text-left"
+            className={`w-full flex flex-col gap-8 text-left transition-all duration-700 delay-500 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`}
           >
-            {/* GUEST NAME Field */}
+            {/* YOUR NAME Field */}
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="rsvp-guest-name"
                 className="font-sans-ui text-[11px] tracking-[0.25em] uppercase font-medium"
                 style={{ color: isNight ? '#C7AA71' : '#681A24' }}
               >
-                GUEST NAME
+                YOUR NAME
               </label>
               <input
                 id="rsvp-guest-name"
                 type="text"
                 required
-                maxLength={100}
+                maxLength={80}
                 value={guestName}
                 onChange={(e) => setGuestName(e.target.value)}
                 placeholder="Full name of guest / family"
@@ -313,26 +317,18 @@ export const RsvpSection: React.FC = () => {
               </div>
             )}
 
-            {/* Error Notice */}
-            {submitError && (
-              <p className="text-xs font-sans-ui text-red-500 tracking-wider">
-                {submitError}
-              </p>
-            )}
-
             {/* CONFIRM RSVP Button */}
             <div className="flex justify-center pt-2">
               <button
                 type="submit"
-                disabled={isSubmitting}
-                className="group inline-flex items-center justify-center gap-2.5 px-8 py-3.5 text-xs tracking-[0.22em] uppercase font-sans-ui font-medium border rounded-sm transition-all duration-300 cursor-pointer disabled:opacity-50 focus:outline-none focus-visible:ring-1 focus-visible:ring-[#9B7E46]"
+                className="group inline-flex items-center justify-center gap-2.5 px-8 py-3.5 text-xs tracking-[0.22em] uppercase font-sans-ui font-medium border rounded-sm transition-all duration-300 cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-[#9B7E46]"
                 style={{
                   borderColor: isNight ? 'rgba(199, 170, 113, 0.45)' : 'rgba(155, 126, 70, 0.5)',
                   backgroundColor: isNight ? 'rgba(28, 25, 23, 0.5)' : 'rgba(244, 239, 234, 0.5)',
                   color: isNight ? '#F7F3EE' : '#1E1B18',
                 }}
               >
-                <span>{isSubmitting ? 'CONFIRMING...' : 'CONFIRM RSVP'}</span>
+                <span>CONFIRM RSVP</span>
                 <span
                   className="transition-transform duration-300 group-hover:translate-x-1"
                   style={{ color: isNight ? '#DFC794' : '#681A24' }}
@@ -344,22 +340,6 @@ export const RsvpSection: React.FC = () => {
           </form>
         )}
       </div>
-
-      {/* Confirmation Modal for Google Sheet updates */}
-      <ConfirmModal
-        isOpen={showConfirmModal}
-        title="Record RSVP to Google Sheet"
-        message={`Save attendance response for "${pendingPayload?.guestName}" (${pendingPayload?.attendance}${
-          pendingPayload?.attendance === 'Joyfully Accept' ? `, ${pendingPayload?.numberOfGuests} guests` : ''
-        }) directly into the official Wedding Google Sheet?`}
-        confirmLabel="Confirm &amp; Record"
-        cancelLabel="Cancel"
-        onConfirm={handleConfirmSheetSave}
-        onCancel={() => {
-          setShowConfirmModal(false);
-          setPendingPayload(null);
-        }}
-      />
 
       {/* Visual Flow Divider to Closing */}
       <div className="w-16 md:w-24 h-[1px] kasavu-line mt-16 md:mt-24" />

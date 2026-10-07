@@ -78,12 +78,12 @@ export const CountdownSection: React.FC = () => {
         </p>
 
         {timeLeft.isPast ? (
-          <div className="py-6">
+          <div className="py-6 animate-fadeInSlow">
             <p
-              className="font-cormorant italic text-3xl sm:text-4xl md:text-5xl font-light tracking-[0.1em] transition-colors duration-700"
+              className="font-cormorant text-2xl sm:text-3xl md:text-4xl font-light tracking-[0.2em] uppercase transition-colors duration-700"
               style={{ color: isNight ? '#DFC794' : '#681A24' }}
             >
-              Forever has begun.
+              FOREVER HAS BEGUN.
             </p>
           </div>
         ) : (
@@ -92,7 +92,8 @@ export const CountdownSection: React.FC = () => {
             {/* DAYS */}
             <div className="flex flex-col items-center min-w-[55px] sm:min-w-[75px]">
               <span
-                className="font-cormorant text-3xl sm:text-5xl md:text-6xl font-light tabular-nums leading-none transition-colors duration-700"
+                key={timeLeft.days}
+                className="font-cormorant text-3xl sm:text-5xl md:text-6xl font-light tabular-nums leading-none transition-colors duration-700 animate-digit"
                 style={{ color: isNight ? '#F7F3EE' : '#1E1B18' }}
               >
                 {String(timeLeft.days).padStart(2, '0')}
@@ -115,7 +116,8 @@ export const CountdownSection: React.FC = () => {
             {/* HOURS */}
             <div className="flex flex-col items-center min-w-[55px] sm:min-w-[75px]">
               <span
-                className="font-cormorant text-3xl sm:text-5xl md:text-6xl font-light tabular-nums leading-none transition-colors duration-700"
+                key={timeLeft.hours}
+                className="font-cormorant text-3xl sm:text-5xl md:text-6xl font-light tabular-nums leading-none transition-colors duration-700 animate-digit"
                 style={{ color: isNight ? '#F7F3EE' : '#1E1B18' }}
               >
                 {String(timeLeft.hours).padStart(2, '0')}
@@ -138,7 +140,8 @@ export const CountdownSection: React.FC = () => {
             {/* MINUTES */}
             <div className="flex flex-col items-center min-w-[55px] sm:min-w-[75px]">
               <span
-                className="font-cormorant text-3xl sm:text-5xl md:text-6xl font-light tabular-nums leading-none transition-colors duration-700"
+                key={timeLeft.minutes}
+                className="font-cormorant text-3xl sm:text-5xl md:text-6xl font-light tabular-nums leading-none transition-colors duration-700 animate-digit"
                 style={{ color: isNight ? '#F7F3EE' : '#1E1B18' }}
               >
                 {String(timeLeft.minutes).padStart(2, '0')}
@@ -161,7 +164,8 @@ export const CountdownSection: React.FC = () => {
             {/* SECONDS */}
             <div className="flex flex-col items-center min-w-[55px] sm:min-w-[75px]">
               <span
-                className="font-cormorant text-3xl sm:text-5xl md:text-6xl font-light tabular-nums leading-none transition-colors duration-700"
+                key={timeLeft.seconds}
+                className="font-cormorant text-3xl sm:text-5xl md:text-6xl font-light tabular-nums leading-none transition-colors duration-700 animate-digit"
                 style={{ color: isNight ? '#F7F3EE' : '#1E1B18' }}
               >
                 {String(timeLeft.seconds).padStart(2, '0')}
