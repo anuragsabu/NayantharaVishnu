@@ -100,13 +100,17 @@
 
 /* Gentle Paper Grain Texture overlay */
 .paper-texture {
-  background-image: radial-gradient(rgba(155, 126, 70, 0.04) 1px, transparent 0);
-  background-size: 28px 28px;
+  background-image: 
+    radial-gradient(rgba(155, 126, 70, 0.04) 1px, transparent 0),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
+  background-size: 28px 28px, 160px 160px;
 }
 
 .night-mode .paper-texture {
-  background-image: radial-gradient(rgba(223, 199, 148, 0.035) 1px, transparent 0);
-  background-size: 28px 28px;
+  background-image: 
+    radial-gradient(rgba(223, 199, 148, 0.035) 1px, transparent 0),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.025'/%3E%3C/svg%3E");
+  background-size: 28px 28px, 160px 160px;
 }
 
 /* Audio Waveform Bar Animation */
@@ -195,25 +199,22 @@
   animation: heroWedsReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
 }
 
-/* Soft Vertical Paper Mask Reveal for Groom */
+/* Refined Cinematic Editorial Entrance for VISHNU VIJAYAN */
 @keyframes heroGroomReveal {
   0% {
     opacity: 0;
-    clip-path: inset(100% 0 0 0);
     transform: translateY(10px);
-    letter-spacing: 0.2em;
   }
   100% {
     opacity: 1;
-    clip-path: inset(0 0 0 0);
     transform: translateY(0);
-    letter-spacing: 0.12em;
   }
 }
 
 .animate-hero-groom {
   opacity: 0;
-  animation: heroGroomReveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) 1.3s forwards;
+  animation: heroGroomReveal 1.6s cubic-bezier(0.22, 1, 0.36, 1) 1.3s forwards;
+  will-change: opacity, transform;
 }
 
 /* Subtle Countdown Digit Fade */
@@ -230,6 +231,80 @@
 
 .animate-digit {
   animation: digitFade 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Antique Temple Bell 1-2° Pendulum Sway Animation (Plays once naturally then comes to rest) */
+@keyframes bellPendulum {
+  0% { transform: rotate(0deg); }
+  12% { transform: rotate(2.2deg); }
+  28% { transform: rotate(-1.8deg); }
+  44% { transform: rotate(1.2deg); }
+  60% { transform: rotate(-0.7deg); }
+  76% { transform: rotate(0.35deg); }
+  88% { transform: rotate(-0.15deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.animate-bell-pendulum {
+  animation: bellPendulum 2.2s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  transform-origin: top center;
+}
+
+/* Delicate Kerala Jasmine Botanical Reveal */
+@keyframes jasmineReveal {
+  0% {
+    opacity: 0.15;
+    transform: translateY(-2px);
+  }
+  100% {
+    opacity: 0.9;
+    transform: translateY(0px);
+  }
+}
+
+.animate-jasmine-reveal {
+  animation: jasmineReveal 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards;
+}
+
+/* Antique Brass Light Sweep Animation (Plays once across monogram & ornaments) */
+@keyframes brassSweep {
+  0% {
+    transform: translateX(-160%) skewX(-25deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.85;
+  }
+  80% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateX(260%) skewX(-25deg);
+    opacity: 0;
+  }
+}
+
+.brass-light-sweep {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.brass-light-sweep::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 248, 220, 0.6) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  animation: brassSweep 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s 1 forwards;
 }
 
 /* Respect prefers-reduced-motion */

@@ -34,7 +34,7 @@ export function downloadICS(event: CalendarEventDetails, filename: string): void
   const icsLines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//Nayanthara & Vishnu Vijay Wedding//EN',
+    'PRODID:-//Nayanthara & Vishnu Vijayan Wedding//EN',
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
     'BEGIN:VEVENT',

@@ -6,7 +6,7 @@
  * Minimal heirloom benediction:
  * ॥ शुभमस्तु ॥
  * N & V
- * NAYANTHARA · VISHNU VIJAY
+ * NAYANTHARA · VISHNU VIJAYAN
  * 05 · 11 · 2026
  * “May this beginning be blessed.”
  * Signature temple lamp with calm steady flame.
@@ -61,9 +61,9 @@ export const ClosingSection: React.FC = () => {
           ॥ शुभमस्तु ॥
         </p>
 
-        {/* 2. Monogram N & V (Appears Second) */}
+        {/* 2. Monogram N & V with Antique Brass Light Sweep (Appears Second) */}
         <div
-          className={`font-cinzel text-2xl sm:text-3xl tracking-[0.3em] my-3 transition-all duration-1000 delay-300 ${
+          className={`font-cinzel text-2xl sm:text-3xl tracking-[0.3em] my-3 transition-all duration-1000 delay-300 px-3 py-1 brass-light-sweep ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
           }`}
           style={{ color: isNight ? '#DFC794' : '#9B7E46' }}
@@ -98,7 +98,7 @@ export const ClosingSection: React.FC = () => {
           }`}
           style={{ color: isNight ? '#EAE3DA' : '#681A24' }}
         >
-          “May this beginning be blessed.”
+          May this beginning be blessed.
         </p>
 
         {/* Signature Nilavilakku Heritage Lamp shown at the close with calm flame */}
@@ -109,6 +109,22 @@ export const ClosingSection: React.FC = () => {
         >
           <NilavilakkuLamp size="closing" showInteractiveHint={false} />
         </div>
+
+        {/* Generous Whitespace Before Creator Credit */}
+        <div className="mt-20 md:mt-28" />
+
+        {/* 7. Creator Credit (Clickable to WhatsApp with prefilled message) */}
+        <a
+          href={`https://wa.me/${WEDDING_DETAILS.contact.whatsappRaw}?text=${encodeURIComponent(
+            WEDDING_DETAILS.creator.prefilledMessage
+          )}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[11px] sm:text-xs font-sans-ui tracking-[0.16em] transition-opacity duration-300 opacity-60 hover:opacity-100 focus:outline-none focus-visible:ring-1 focus-visible:ring-[#9B7E46]"
+          style={{ color: isNight ? '#C7AA71' : '#7D756C' }}
+        >
+          {WEDDING_DETAILS.creator.creditText}
+        </a>
       </div>
     </footer>
   );

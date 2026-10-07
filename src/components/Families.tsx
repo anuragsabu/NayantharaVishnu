@@ -66,10 +66,12 @@ export const Families: React.FC = () => {
           </p>
 
           <p
-            className="font-cormorant text-lg sm:text-xl md:text-2xl font-light transition-colors duration-700"
+            className="font-cormorant text-lg sm:text-xl md:text-2xl font-light transition-colors duration-700 leading-snug"
             style={{ color: isNight ? '#EAE3DA' : '#1E1B18' }}
           >
-            {WEDDING_DETAILS.bride.parents}
+            Sunil V.K (Late)
+            <br />
+            &amp; Mrs. Shyma Sunil
           </p>
 
           <p
@@ -128,10 +130,12 @@ export const Families: React.FC = () => {
           </p>
 
           <p
-            className="font-cormorant text-lg sm:text-xl md:text-2xl font-light transition-colors duration-700"
+            className="font-cormorant text-lg sm:text-xl md:text-2xl font-light transition-colors duration-700 leading-snug"
             style={{ color: isNight ? '#EAE3DA' : '#1E1B18' }}
           >
-            {WEDDING_DETAILS.groom.parents}
+            Mr. Vijayan V. N.
+            <br />
+            &amp; Mrs. Sheela Vijayan
           </p>
 
           <p

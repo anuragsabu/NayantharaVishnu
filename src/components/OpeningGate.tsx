@@ -76,9 +76,9 @@ export const OpeningGate: React.FC<OpeningGateProps> = ({ onOpen }) => {
 
       {/* CENTER: Monogram & Grand Names */}
       <div className="flex flex-col items-center max-w-2xl mx-auto w-full my-auto py-6">
-        {/* Monogram N & V */}
+        {/* Monogram N & V with Antique Brass Light Sweep */}
         <div
-          className="font-cinzel text-3xl sm:text-4xl md:text-5xl font-normal tracking-[0.3em] mb-4 transition-colors duration-700"
+          className="font-cinzel text-3xl sm:text-4xl md:text-5xl font-normal tracking-[0.3em] mb-4 transition-colors duration-700 px-3 py-1 brass-light-sweep"
           style={{ color: isNight ? '#DFC794' : '#9B7E46' }}
         >
           {WEDDING_DETAILS.monogram}

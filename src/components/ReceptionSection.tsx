@@ -42,14 +42,14 @@ export const ReceptionSection: React.FC = () => {
   }, [isReducedMotion]);
 
   const eventDetails: CalendarEventDetails = {
-    title: `Nayanthara & Vishnu Vijay — Wedding Reception`,
-    description: `Wedding Reception of Nayanthara & Vishnu Vijay.\nTime: ${WEDDING_DETAILS.reception.time}\nVenue: ${WEDDING_DETAILS.reception.venue}`,
-    location: WEDDING_DETAILS.reception.venue,
+    title: `Nayanthara & Vishnu Vijayan — Wedding Reception`,
+    description: `Wedding Reception of Nayanthara & Vishnu Vijayan.\nTime: ${WEDDING_DETAILS.reception.time}\nVenue: ${WEDDING_DETAILS.reception.venue}, ${WEDDING_DETAILS.reception.city}`,
+    location: `${WEDDING_DETAILS.reception.venue}, ${WEDDING_DETAILS.reception.city}`,
     startDate: WEDDING_DETAILS.reception.isoStart,
   };
 
   const handleDownloadICS = () => {
-    downloadICS(eventDetails, 'nayanthara-vishnu-reception');
+    downloadICS(eventDetails, 'nayanthara-vishnu-vijayan-reception');
     setShowCalendarMenu(false);
   };
 
@@ -112,7 +112,7 @@ export const ReceptionSection: React.FC = () => {
 
         {/* Venue Information */}
         <div
-          className={`flex flex-col items-center mb-10 transition-all duration-700 delay-600 ${
+          className={`flex flex-col items-center gap-2 mb-10 transition-all duration-700 delay-600 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
           }`}
         >
@@ -121,6 +121,12 @@ export const ReceptionSection: React.FC = () => {
             style={{ color: isNight ? '#F7F3EE' : '#1E1B18' }}
           >
             {WEDDING_DETAILS.reception.venue}
+          </p>
+          <p
+            className="font-cinzel text-xs sm:text-sm tracking-[0.28em] uppercase transition-colors duration-700"
+            style={{ color: isNight ? '#C7AA71' : '#681A24' }}
+          >
+            {WEDDING_DETAILS.reception.city}
           </p>
         </div>
 

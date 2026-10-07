@@ -2,7 +2,7 @@
  * @license
  * SPDX-License-Identifier: Apache-2.0
  * 
- * NAYANTHARA & VISHNU VIJAY — WEDDING INVITATION
+ * NAYANTHARA & VISHNU VIJAYAN — WEDDING INVITATION
  * An heirloom Kerala Hindu digital wedding invitation experience.
  */
 

@@ -52,9 +52,9 @@ export const RsvpSection: React.FC = () => {
   const generateWhatsAppUrl = (name: string, attend: AttendanceOption, count: GuestCount) => {
     let messageText = '';
     if (attend === 'Joyfully Accept') {
-      messageText = `Hello, I’m ${name.trim()}.\nI’d like to confirm my RSVP for Nayanthara & Vishnu Vijay’s wedding.\n\nAttendance: Joyfully Accept\nNumber of Guests: ${count}`;
+      messageText = `Hello, I’m ${name.trim()}.\nI’d like to confirm my RSVP for Nayanthara & Vishnu Vijayan’s wedding.\n\nAttendance: Joyfully Accept\nNumber of Guests: ${count}`;
     } else {
-      messageText = `Hello, I’m ${name.trim()}.\nI’m sorry, but I won’t be able to attend Nayanthara & Vishnu Vijay’s wedding.\n\nAttendance: Regretfully Decline`;
+      messageText = `Hello, I’m ${name.trim()}.\nI’m sorry, but I won’t be able to attend Nayanthara & Vishnu Vijayan’s wedding.\n\nAttendance: Regretfully Decline`;
     }
 
     return `https://wa.me/${WEDDING_DETAILS.contact.whatsappRaw}?text=${encodeURIComponent(messageText)}`;
@@ -144,7 +144,7 @@ export const RsvpSection: React.FC = () => {
               className="font-sans-ui text-xs leading-relaxed max-w-sm opacity-80 mb-6"
               style={{ color: isNight ? '#EAE3DA' : '#4A443E' }}
             >
-              Please press <strong>Send</strong> in WhatsApp to complete your RSVP message to Vishnu &amp; Nayanthara.
+              Please press <strong>Send</strong> in WhatsApp to complete your RSVP message to Nayanthara &amp; Vishnu Vijayan.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-3">

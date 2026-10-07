@@ -11,6 +11,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { WEDDING_DETAILS } from '../config';
 import { downloadICS, getGoogleCalendarUrl, CalendarEventDetails } from '../utils/calendar';
+import { TempleBell } from './TempleBell';
 
 export const WeddingCeremony: React.FC = () => {
   const { isNight, isReducedMotion } = useTheme();
@@ -42,15 +43,15 @@ export const WeddingCeremony: React.FC = () => {
   }, [isReducedMotion]);
 
   const eventDetails: CalendarEventDetails = {
-    title: `Nayanthara & Vishnu Vijay — Thali Kettu`,
-    description: `Wedding Ceremony (Thali Kettu) of Nayanthara & Vishnu Vijay.\nMuhurtham: ${WEDDING_DETAILS.ceremony.muhurtham}\nVenue: ${WEDDING_DETAILS.ceremony.fullVenue}`,
+    title: `Nayanthara & Vishnu Vijayan — Thali Kettu`,
+    description: `Wedding Ceremony (Thali Kettu) of Nayanthara & Vishnu Vijayan.\nMuhurtham: ${WEDDING_DETAILS.ceremony.muhurtham}\nVenue: ${WEDDING_DETAILS.ceremony.fullVenue}`,
     location: WEDDING_DETAILS.ceremony.fullVenue,
     startDate: WEDDING_DETAILS.ceremony.isoStart,
     endDate: WEDDING_DETAILS.ceremony.isoEnd,
   };
 
   const handleDownloadICS = () => {
-    downloadICS(eventDetails, 'nayanthara-vishnu-thali-kettu');
+    downloadICS(eventDetails, 'nayanthara-vishnu-vijayan-thali-kettu');
     setShowCalendarMenu(false);
   };
 
@@ -63,12 +64,100 @@ export const WeddingCeremony: React.FC = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full py-16 md:py-28 px-6 flex flex-col items-center text-center"
+      className="relative w-full py-16 md:py-28 px-6 flex flex-col items-center text-center overflow-hidden"
     >
-      <div className="max-w-2xl mx-auto w-full flex flex-col items-center">
-        {/* Antique Brass Line Draws First */}
+      {/* 2. AUTHENTIC KERALA TEMPLE ARCHITECTURAL LINE-ART ENGRAVING — Behind Ceremony Content */}
+      <div
+        aria-hidden="true"
+        className={`absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0 transition-all duration-[1800ms] ease-out ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
+        }`}
+      >
         <div
-          className={`w-16 md:w-24 h-[1px] kasavu-line mb-4 transition-transform duration-1000 ${
+          className="w-[340px] sm:w-[480px] md:w-[620px] max-w-full transition-opacity duration-700 opacity-[0.11] dark:opacity-[0.16]"
+          style={{ color: isNight ? '#DFC794' : '#9B7E46' }}
+        >
+          <svg
+            viewBox="0 0 400 240"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-full h-auto mx-auto"
+          >
+            {/* Sacred Thazhikakkudam (Pinnacle Stupi Finial) */}
+            <path d="M200 8 L203 15 L200 22 L197 15 Z" fill="currentColor" />
+            <line x1="200" y1="22" x2="200" y2="34" stroke="currentColor" strokeWidth="1.2" />
+            <ellipse cx="200" cy="26" rx="3.5" ry="1.8" fill="currentColor" />
+            <ellipse cx="200" cy="34" rx="5" ry="2.2" fill="currentColor" />
+
+            {/* Upper Tier Pitched Kerala Copper Roof (Dwithala Vimana) */}
+            <line x1="168" y1="35" x2="232" y2="35" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+            <path d="M200 35 L144 76 H256 Z" stroke="currentColor" strokeWidth="1.2" fill="none" />
+            {/* Roof Timber Rafters */}
+            <line x1="200" y1="35" x2="162" y2="76" stroke="currentColor" strokeWidth="0.6" strokeDasharray="2 3" />
+            <line x1="200" y1="35" x2="182" y2="76" stroke="currentColor" strokeWidth="0.6" strokeDasharray="2 3" />
+            <line x1="200" y1="35" x2="218" y2="76" stroke="currentColor" strokeWidth="0.6" strokeDasharray="2 3" />
+            <line x1="200" y1="35" x2="238" y2="76" stroke="currentColor" strokeWidth="0.6" strokeDasharray="2 3" />
+
+            {/* Upper Sweeping Eaves Projection (Chhajja Rim) */}
+            <path d="M140 78 L144 76 H256 L260 78" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+
+            {/* Louvered Timber Clerestory / Griva (Attic Ventilation) */}
+            <rect x="158" y="78" width="84" height="22" stroke="currentColor" strokeWidth="1" fill="none" />
+            <line x1="168" y1="78" x2="168" y2="100" stroke="currentColor" strokeWidth="0.7" />
+            <line x1="178" y1="78" x2="178" y2="100" stroke="currentColor" strokeWidth="0.7" />
+            <line x1="188" y1="78" x2="188" y2="100" stroke="currentColor" strokeWidth="0.7" />
+            <line x1="198" y1="78" x2="198" y2="100" stroke="currentColor" strokeWidth="0.7" />
+            <line x1="202" y1="78" x2="202" y2="100" stroke="currentColor" strokeWidth="0.7" />
+            <line x1="212" y1="78" x2="212" y2="100" stroke="currentColor" strokeWidth="0.7" />
+            <line x1="222" y1="78" x2="222" y2="100" stroke="currentColor" strokeWidth="0.7" />
+            <line x1="232" y1="78" x2="232" y2="100" stroke="currentColor" strokeWidth="0.7" />
+
+            {/* Main Sweeping Lower Overhanging Tiled Roof (Ekathala Eaves) */}
+            <path d="M200 100 L68 144 H332 Z" stroke="currentColor" strokeWidth="1.4" fill="none" />
+            {/* Rafter Ribs */}
+            <line x1="200" y1="100" x2="104" y2="144" stroke="currentColor" strokeWidth="0.6" strokeDasharray="2 3" />
+            <line x1="200" y1="100" x2="138" y2="144" stroke="currentColor" strokeWidth="0.6" strokeDasharray="2 3" />
+            <line x1="200" y1="100" x2="172" y2="144" stroke="currentColor" strokeWidth="0.6" strokeDasharray="2 3" />
+            <line x1="200" y1="100" x2="228" y2="144" stroke="currentColor" strokeWidth="0.6" strokeDasharray="2 3" />
+            <line x1="200" y1="100" x2="262" y2="144" stroke="currentColor" strokeWidth="0.6" strokeDasharray="2 3" />
+            <line x1="200" y1="100" x2="296" y2="144" stroke="currentColor" strokeWidth="0.6" strokeDasharray="2 3" />
+
+            {/* Lower Eaves Timber Molding (Valabhi Beam) */}
+            <line x1="62" y1="146" x2="338" y2="146" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+            <line x1="66" y1="149" x2="334" y2="149" stroke="currentColor" strokeWidth="0.8" />
+
+            {/* Traditional Kerala Timber Pillars (Thoonukal) & Sanctum Cloister */}
+            <rect x="96" y="149" width="208" height="48" stroke="currentColor" strokeWidth="1" fill="none" />
+            <line x1="112" y1="149" x2="112" y2="197" stroke="currentColor" strokeWidth="1.4" />
+            <line x1="134" y1="149" x2="134" y2="197" stroke="currentColor" strokeWidth="1" />
+            <line x1="156" y1="149" x2="156" y2="197" stroke="currentColor" strokeWidth="1" />
+            <line x1="178" y1="149" x2="178" y2="197" stroke="currentColor" strokeWidth="1" />
+            <line x1="222" y1="149" x2="222" y2="197" stroke="currentColor" strokeWidth="1" />
+            <line x1="244" y1="149" x2="244" y2="197" stroke="currentColor" strokeWidth="1" />
+            <line x1="266" y1="149" x2="266" y2="197" stroke="currentColor" strokeWidth="1" />
+            <line x1="288" y1="149" x2="288" y2="197" stroke="currentColor" strokeWidth="1.4" />
+
+            {/* Sanctum Portal (Sreekovil Dvara) */}
+            <path d="M190 197 V163 C190 159 210 159 210 163 V197" stroke="currentColor" strokeWidth="1.2" />
+
+            {/* Moulded Granite Basement Courses (Adhisthana) */}
+            <rect x="84" y="197" width="232" height="7" stroke="currentColor" strokeWidth="1" fill="none" />
+            <rect x="74" y="204" width="252" height="8" stroke="currentColor" strokeWidth="1.2" fill="none" />
+            <rect x="62" y="212" width="276" height="10" stroke="currentColor" strokeWidth="1.4" fill="none" />
+            <line x1="50" y1="222" x2="350" y2="222" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+          </svg>
+        </div>
+      </div>
+
+      <div className="relative z-10 max-w-2xl mx-auto w-full flex flex-col items-center">
+        {/* A. INTERACTIVE TEMPLE BELL (Gentle 1-2° Pendulum Sway upon entering viewport) */}
+        <div className="mb-4">
+          <TempleBell />
+        </div>
+
+        {/* B. Antique Brass Kasavu Line Draws Smoothly */}
+        <div
+          className={`w-20 md:w-32 h-[1px] kasavu-line mb-4 transition-transform duration-1000 ${
             isVisible ? 'animate-line-draw' : 'scale-x-0'
           }`}
         />
@@ -130,106 +219,12 @@ export const WeddingCeremony: React.FC = () => {
           </p>
         </div>
 
-        {/* Strong Venue Reveal with Refined Temple Architectural Line Art */}
+        {/* Venue Information Reveal */}
         <div
-          className={`flex flex-col items-center mt-8 mb-8 w-full transition-all duration-1000 delay-700 ${
+          className={`flex flex-col items-center mt-6 mb-8 w-full transition-all duration-1000 delay-700 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}
         >
-          {/* Temple Architectural Line Art */}
-          <div className="w-full max-w-xs md:max-w-sm mb-6 transition-opacity duration-700 opacity-85">
-            <svg
-              viewBox="0 0 320 180"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-full h-auto mx-auto"
-            >
-              {/* Stupi / Kalasam (Golden Finial) */}
-              <path
-                d="M160 12 L163 18 L160 24 L157 18 Z"
-                fill={isNight ? '#DFC794' : '#9B7E46'}
-              />
-              <line
-                x1="160"
-                y1="24"
-                x2="160"
-                y2="34"
-                stroke={isNight ? '#DFC794' : '#9B7E46'}
-                strokeWidth="1.2"
-              />
-              <ellipse
-                cx="160"
-                cy="34"
-                rx="4"
-                ry="2"
-                fill={isNight ? '#DFC794' : '#9B7E46'}
-              />
-
-              {/* Upper Tier Copper Roof (Gabled Pitch) */}
-              <path
-                d="M160 36 L118 70 H202 Z"
-                stroke={isNight ? '#DFC794' : '#9B7E46'}
-                strokeWidth="1.2"
-                fill={isNight ? 'rgba(223, 199, 148, 0.04)' : 'rgba(155, 126, 70, 0.03)'}
-              />
-              <line x1="160" y1="36" x2="135" y2="70" stroke={isNight ? '#DFC794' : '#9B7E46'} strokeWidth="0.6" strokeDasharray="2 3" />
-              <line x1="160" y1="36" x2="185" y2="70" stroke={isNight ? '#DFC794' : '#9B7E46'} strokeWidth="0.6" strokeDasharray="2 3" />
-
-              {/* Middle Louvered Clerestory */}
-              <rect
-                x="132"
-                y="70"
-                width="56"
-                height="18"
-                stroke={isNight ? '#DFC794' : '#9B7E46'}
-                strokeWidth="1"
-              />
-              <line x1="140" y1="70" x2="140" y2="88" stroke={isNight ? '#DFC794' : '#9B7E46'} strokeWidth="0.8" />
-              <line x1="150" y1="70" x2="150" y2="88" stroke={isNight ? '#DFC794' : '#9B7E46'} strokeWidth="0.8" />
-              <line x1="160" y1="70" x2="160" y2="88" stroke={isNight ? '#DFC794' : '#9B7E46'} strokeWidth="0.8" />
-              <line x1="170" y1="70" x2="170" y2="88" stroke={isNight ? '#DFC794' : '#9B7E46'} strokeWidth="0.8" />
-              <line x1="180" y1="70" x2="180" y2="88" stroke={isNight ? '#DFC794' : '#9B7E46'} strokeWidth="0.8" />
-
-              {/* Lower Broad Overhanging Tile Roof */}
-              <path
-                d="M160 88 L60 126 H260 Z"
-                stroke={isNight ? '#DFC794' : '#9B7E46'}
-                strokeWidth="1.3"
-                fill={isNight ? 'rgba(223, 199, 148, 0.05)' : 'rgba(155, 126, 70, 0.04)'}
-              />
-              <line x1="160" y1="88" x2="100" y2="126" stroke={isNight ? '#DFC794' : '#9B7E46'} strokeWidth="0.6" strokeDasharray="2 3" />
-              <line x1="160" y1="88" x2="220" y2="126" stroke={isNight ? '#DFC794' : '#9B7E46'} strokeWidth="0.6" strokeDasharray="2 3" />
-
-              {/* Eaves Underside Timber Molding */}
-              <line x1="56" y1="128" x2="264" y2="128" stroke={isNight ? '#DFC794' : '#9B7E46'} strokeWidth="1" />
-
-              {/* Pillars */}
-              <rect x="95" y="128" width="130" height="34" stroke={isNight ? '#DFC794' : '#9B7E46'} strokeWidth="1" />
-              <line x1="110" y1="128" x2="110" y2="162" stroke={isNight ? '#DFC794' : '#9B7E46'} strokeWidth="1.2" />
-              <line x1="130" y1="128" x2="130" y2="162" stroke={isNight ? '#DFC794' : '#9B7E46'} strokeWidth="0.8" />
-              <line x1="190" y1="128" x2="190" y2="162" stroke={isNight ? '#DFC794' : '#9B7E46'} strokeWidth="0.8" />
-              <line x1="210" y1="128" x2="210" y2="162" stroke={isNight ? '#DFC794' : '#9B7E46'} strokeWidth="1.2" />
-
-              {/* Portal */}
-              <path
-                d="M148 162 V138 C148 135 172 135 172 138 V162"
-                stroke={isNight ? '#DFC794' : '#9B7E46'}
-                strokeWidth="1.2"
-                fill={isNight ? '#1B1816' : '#FAF6EE'}
-              />
-              <circle cx="160" cy="148" r="1.5" fill="#F57C00" />
-
-              {/* Granite Plinth Base */}
-              <path
-                d="M75 162 H245 V170 H75 Z"
-                stroke={isNight ? '#DFC794' : '#9B7E46'}
-                strokeWidth="1.2"
-                fill={isNight ? 'rgba(223, 199, 148, 0.08)' : 'rgba(155, 126, 70, 0.06)'}
-              />
-              <line x1="65" y1="170" x2="255" y2="170" stroke={isNight ? '#DFC794' : '#9B7E46'} strokeWidth="1.4" />
-            </svg>
-          </div>
-
           <p
             className="font-cormorant text-2xl sm:text-3xl md:text-4xl font-normal tracking-[0.1em] uppercase transition-colors duration-700"
             style={{ color: isNight ? '#F7F3EE' : '#1E1B18' }}
